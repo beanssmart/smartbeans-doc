@@ -75,7 +75,7 @@ public class ASampleBean implements SmartBean {
 Using static imports can improve code readability and maintainability:
 
 ````java
-import static com.github.beanssmart.ha.entities.LightAttr.*;
+import static io.github.beanssmart.ha.entities.LightAttr.*;
 
 public class ASampleBean implements SmartBean {
 

@@ -43,11 +43,11 @@ time, and other parameters. These attributes are represented as `LightAttr` obje
 factory methods provided by the `LightAttr` class.
 
 ````java
-import static com.github.beanssmart.ha.entities.LightAttr.*;
+import static io.github.beanssmart.ha.entities.LightAttr.*;
 
 public class KitchenMotionControl implements SmartBean {
 
-  @Entity( "light.kitchen_ceiling")
+  @Entity("light.kitchen_ceiling")
   private Light ceilingLight;
 
   public void turnLightOn() {
