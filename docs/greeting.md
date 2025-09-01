@@ -3,7 +3,7 @@ description: Create a doc page with rich content.
 position: 1001
 ---
 
-# Table of contents
+# TODOS
 
 - Basic
   - create a bean
