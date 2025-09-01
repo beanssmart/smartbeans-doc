@@ -5,7 +5,7 @@ sidebar_position: 80
 # Provided entities
 
 A SmartBean can provide entities to Home Assistant. These are additional entities that are created through the MQTT 
-discovery mechanism and are added to the [bean device](devices) in Home Assistatnt. These entities can be used to
+discovery mechanism and are added to the [bean device](devices) in Home Assistant. These entities can be used to
 populate data or to trigger actions of the bean from Home Assistant.
 
 ## Populate data
