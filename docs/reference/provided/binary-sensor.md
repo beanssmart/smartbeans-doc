@@ -35,16 +35,16 @@ created, since they cannot be associated with a device.
 The `@Provided` annotation can be used to configure the provided binary sensor in detail. It supports the following 
 attributes:
 
-| Attribute           | Description                                                                                                                            |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `entityId`          | **Required**. The entity_id of the created entity in Home Assistant. If this entity already exists, Home Assistant adds an '_2' to it. |
-| `id`                | The internal ID of the entity. This ID must be unique within the scope of the bean device. If not specified, the field name is used.   |
-| `friendlyName`      | The friendly name of the entity shown in Home Assistant.                                                                               |
-| `icon`              | The icon displayed in Home Assistant for this entity. If no icon is specified, it is derived from the device class.                    |
-| `deviceClass`       | The [device class](https://www.home-assistant.io/integrations/binary_sensor/#device-class) of the entity in Home Assistant.            |
-| `unitOfMeasurement` | _Not used for binary sensors._                                                                                                         |
-| `stateClass`        | _Not used for binary sensors._                                                                                                         |
-| `options`           | _Not used for binary sensors._                                                                                                         |
+| Attribute           | Description                                                                                                                                         |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `entityId`          | **Required**. The `entity_id` of the entity created in Home Assistant. If an entity with this ID already exists, Home Assistant appends `_2` to it. |
+| `id`                | The internal ID of the entity. This ID must be unique within the scope of the bean device. If not specified, the field name is used.                |
+| `friendlyName`      | The friendly name of the entity displayed in Home Assistant.                                                                                        |
+| `icon`              | The icon shown in Home Assistant for this entity. If no icon is specified, it is derived from the device class.                                     |
+| `deviceClass`       | The [device class](https://www.home-assistant.io/integrations/binary_sensor/#device-class) of the entity in Home Assistant.                         |
+| `unitOfMeasurement` | _Not used for binary sensors._                                                                                                                      |
+| `stateClass`        | _Not used for binary sensors._                                                                                                                      |
+| `options`           | _Not used for binary sensors._                                                                                                                      |
 
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
@@ -83,7 +83,7 @@ method, which is called when the persistent bean state is loaded.
 ## Create entity programmatically
 
 In addition to the annotation-based approach, you can programmatically create a binary sensor using the 
-`provideBinarySensor()` method of the `SmartBeans` API. This approach is useful when the entity’s attributes are 
+`provideBinarySensor()` method of the `SmartBeans` API. This approach is useful when the entity's attributes are 
 generated dynamically through business logic and cannot be determined at compile time. 
 
 The method accepts three arguments: the first is the internal ID, which must be unique within the scope of the bean; 
@@ -105,5 +105,3 @@ public class ASampleBean implements SmartBean {
   }
 }
 ````
-
-
