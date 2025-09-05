@@ -24,6 +24,7 @@ public class ASampleBean implements SmartBean {
   }
 }
 ````
+
 :::note
 The `@SmartBeanDef(beanDevice = @BeanDevice)` annotation is required on your bean to create the corresponding bean device 
 in Home Assistant. Without this annotation, no bean device will be created, and therefore no provided entities can be 
