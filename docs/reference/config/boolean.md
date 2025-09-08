@@ -1,10 +1,10 @@
 ---
 sidebar_position: 20
-description: "Switches representing a boolean config parameter."
+description: "A switch representing a boolean config parameter."
 title: Boolean
 ---
 
-# Boolean Config
+# Boolean config
 
 The `ConfigBoolean` can be used to create a configuration switch in Home Assistant to enable or disable a feature of the
 bean. Technically, it represents a configurable `boolean` value in the bean that can be controlled through a Home
@@ -43,7 +43,7 @@ supports the following attributes:
 
 | Attribute           | Description                                                                                                                                                                                                                              |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `value`             | The default or inital value of the configurable boolean, must be either `true` or `false`                                                                                                                                                |
+| `value`             | **Required:** The default or inital value of the configurable boolean, must be either `true` or `false`                                                                                                                                  |
 | `entityId`          | The `entity_id` of the entity created in Home Assistant. If an entity with this ID already exists, Home Assistant appends `_2` to it. If not set SmartBeans generates an entity ID using the name of the bean and the name of the field. |
 | `friendlyName`      | The friendly name of the entity displayed in Home Assistant.                                                                                                                                                                             |
 | `icon`              | The icon shown in Home Assistant for this entity. If no icon is specified, it is derived from the device class.                                                                                                                          |
@@ -107,8 +107,8 @@ triggers, and timers.
 ## Create entity programmatically
 
 In addition to the annotation-based approach, you can programmatically create a configurable boolean using the 
-`getConfigBoolean()` method of the `SmartBeans` API. This approach is useful when the entity's attributes are generated 
-dynamically through business logic and cannot be determined at compile time. 
+`getConfigBoolean()` method of the `SmartBeans` API. This approach is useful in some edge cases when the entity's
+attributes are generated dynamically through business logic and cannot be determined at compile time. 
 
 The method accepts three arguments: the first is the configuration name, which must be unique within the scope of the
 bean; the second is the default or initial value; and the third is a builder for defining all other attributes of the 
