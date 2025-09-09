@@ -2,29 +2,6 @@
 sidebar_position: 50
 ---
 
-<hr className="subtle-hr" />
-
-### MethodName
-
-`Signature with optional params in`
-
-Short description of what the method does in 1–2 sentences.
-
-| Parameter  | Type    | Default | Description  |
-|------------|---------|---------|--------------|
-| name       | `type`  | val / - | explanation  |
-| ...        | ...     | ...     | ...          |
-
-**Returns**  
-- `Type`: What the return value represents / how it can be used.  
-
-**Example**  
-
-````java
-// Optional: small usage example
-````
-
-
 # `SmartBeans` API
 
 The `SmartBeans` object acts as the central programming interface for a SmartBean. While annotations cover most common 
@@ -45,6 +22,9 @@ public class ASampleBean implements SmartBean {
 The following is a complete reference of all methods provided by the `SmartBeans` API, organized by task category.
 
 ## Framework utilities
+
+This section provides utility methods that are commonly used within a SmartBean. These include access to the current 
+time, retrieving configuration parameters, logging messages, and interacting with other beans.
 
 <hr className="subtle-hr" />
 
@@ -88,81 +68,152 @@ System.out.println("Threshold: " + threshold.asInt(0));
 
 <hr className="subtle-hr" />
 
-### MethodName
+### log
 
-`Signature with optional params in`
+`log(String message)`
+`log(String template, Object... args)`
+`log(Supplier<String> message)`
 
-Short description of what the method does in 1–2 sentences.
+Logs a message to the SmartBeans logging system. Every bean has its own logging space, where all messages are collected.
+Supports plain messages, formatted messages, or lazy evaluation via a `Supplier`.
 
-| Parameter  | Type    | Default | Description  |
-|------------|---------|---------|--------------|
-| name       | `type`  | val / - | explanation  |
-| ...        | ...     | ...     | ...          |
-
-**Returns**  
-- `Type`: What the return value represents / how it can be used.  
+| Parameter | Type               | Description                                                                    |
+|-----------|--------------------|--------------------------------------------------------------------------------|
+| message   | `String`           | Message to be logged.                                                          |
+| template  | `String`           | Message template to be logged, like the `printf()` mechanism in standard Java. |
+| args      | `Object...`        | Arguments for the message template.                                            |
+| message   | `Supplier<String>` | Message with lazy evaluation, useful to avoid unnecessary computation.         |
 
 **Example**  
 
 ````java
-// Optional: small usage example
+sb.log("Motion detected in kitchen");
+sb.log("Temperature is %d°C", 23);
+sb.log(() -> "Dynamic log message with value " + someValue);
 ````
 
 <hr className="subtle-hr" />
 
-### MethodName
+### getBean
 
-`Signature with optional params in`
+`getBean(Class<Bean> beanType)`
+`getBean(Class<Bean> beanType, String beanName)`
 
-Short description of what the method does in 1–2 sentences.
+Retrieves a [proxy to another SmartBean](../basic-concepts/access-other), allowing method calls in the context of the
+target bean's thread. This is useful to safely interact with other beans without directly invoking their methods.
 
-| Parameter  | Type    | Default | Description  |
-|------------|---------|---------|--------------|
-| name       | `type`  | val / - | explanation  |
-| ...        | ...     | ...     | ...          |
+| Parameter | Type          | Description                                                                                   |
+|-----------|---------------|-----------------------------------------------------------------------------------------------|
+| beanType  | `Class<Bean>` | Class type of the target bean.                                                                |
+| beanName  | `String`      | Optional name of the target bean, required only if multiple instances of the same bean exist. |
 
 **Returns**  
-- `Type`: What the return value represents / how it can be used.  
+- `BeanProxy<Bean>`: Proxy object for invoking methods on the target bean.  
 
 **Example**  
 
 ````java
-// Optional: small usage example
+BeanProxy<KitchenMotionControl> kitchen = sb.getBean(KitchenMotionControl.class);
+kitchen.invoke(KitchenMotionControl::onMotion);
 ````
 
-
-````java
-  public Instant getNow();
-
-  public BeanParameter getParameter(String name);
-
-  default public void log(String message) {
-    log(() -> message);
-  }
-
-  default public void log(String template, Object... args) {
-    log(() -> String.format(template, args));
-  }
-
-  public void log(Supplier<String> message);
-
-  public <Bean extends SmartBean> BeanProxy<Bean> getBean(Class<Bean> beanType);
-
-  public <Bean extends SmartBean> BeanProxy<Bean> getBean(Class<Bean> beanType, String beanName);
-
-````
+<hr className="subtle-hr" />
 
 ## Actions and triggers
 
+This section covers methods to interact with Home Assistant dynamically, such as registering triggers, and calling 
+services.
+
+<hr className="subtle-hr" />
+
+### registerTrigger
+
+`registerTrigger(TriggerDefinition<Event> triggerDefinition)`
+
+Registers a trigger in Home Assistant. This method can be used as an alternative to trigger annotations, as described 
+in [Register to triggers](../basic-concepts/trigger). The trigger definition can be created using the `Triggers` factory
+class, which provides methods for different trigger types as described in the [trigger reference](trigger).
+
+| Parameter         | Type                       | Description                                                               |
+|-------------------|----------------------------|---------------------------------------------------------------------------|
+| triggerDefinition | `TriggerDefinition<Event>` | Definition of the trigger, typically created with the `Triggers` factory. |
+
+**Returns**  
+- `TriggerRegistration<Event>`: Object to manage the registration and unregister the trigger if needed.
+
+**Example**  
+
 ````java
-  public Timer createTimer(Builder<TimerDefinition> definition);
-
-  public <Event extends TriggerEvent> TriggerRegistration<Event> registerTrigger(TriggerDefinition<Event> triggerDefinition);
-
-  public void callService(Service service);
-
-
+TriggerRegistration<StateEvent> registration = sb.registerTrigger(
+    Triggers.state()
+        .ofEntity("binary_sensor.motion_kitchen")
+        .from("off")
+        .to("on")
+);
+// register callback
+registration.onTrigger(evt -> handleMotion());
+// unregister trigger
+registration.unregister();
 ````
+
+<hr className="subtle-hr" />
+
+### callService
+
+`callService(Service service)`
+
+Calls any Home Assistant service. This method is useful if the service is not available through the entity objects 
+provided by SmartBeans. The `Service` parameter object **must** be created using the `Service.name()` factory method, which 
+initializes a service call with a given service name. After creation, the returned `Service` object can be further 
+configured with targets and additional data, such as attributes or parameters, before calling the service.
+
+| Parameter | Type      | Description                                                                                                          |
+|-----------|-----------|----------------------------------------------------------------------------------------------------------------------|
+| service   | `Service` | Service to call in Home Assistant. Use the `Service.name()` factory method to create and configure the service call. |
+
+**Example**  
+
+````java
+sb.callService(
+    Service.name("light.turn_on")                               // Create a service call for "light.turn_on"
+        .onTarget(Target.entity("light.kitchen_ceiling"))       // Set the service target (entity, area, or device)
+        .withData(atts -> atts.setAttribute("brightness", 120)) // Configure additional attributes
+);
+````
+
+This example shows that you can first create a Service object with `Service.name()`, then set its target(s) via `onTarget()` 
+(entities, areas, or devices), and finally configure additional parameters via `withData()` by passing a builder for all 
+attributes. Once fully configured, passing the Service object to `callService()` executes the action in Home Assistant.
+
+<hr className="subtle-hr" />
+
+### createTimer
+
+`createTimer(Builder<TimerDefinition> definition)`
+
+Creates a [timer](../basic-concepts/timer) to execute actions after a specified duration. This method only creates the
+timer; it must be started explicitly unless the autostart feature is enabled.
+
+| Parameter  | Type                       | Description                                                                          |
+|------------|----------------------------|--------------------------------------------------------------------------------------|
+| definition | `Builder<TimerDefinition>` | Builder for defining the timer, including interval, behavior, and actions on events. |
+
+**Returns**  
+- `Timer`: Timer object that can be started, cancelled, or restarted.
+
+**Example**  
+
+````java
+Timer timer = sb.createTimer(timerDefinition -> timerDefinition
+    .setInterval(Duration.ofSeconds(60))   // Set timer interval
+    .onElapsed(evt -> turnOffLight())      // Action to perform when timer elapses
+);
+timer.start(); // Start the timer
+````
+
+See [timer documentation](../basic-concepts/timer) for more details and additional features.
+
+<hr className="subtle-hr" />
 
 ## Entity access
 These methods allow you to access and work with Home Assistant entities.
@@ -175,9 +226,9 @@ These methods allow you to access and work with Home Assistant entities.
 
 Creates a [BinarySensor](entities/binary-sensor) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                       |
-|-----------|----------|---------|---------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the binary sensor in Home Assistant. |
+| Parameter | Type     | Description                                       |
+|-----------|----------|---------------------------------------------------|
+| entityId  | `String` | Entity ID of the binary sensor in Home Assistant. |
 
 **Returns**  
 - `BinarySensor`: Interface to retrieve the current state, including attributes, of the binary sensor.
@@ -201,9 +252,9 @@ if (motion.isOn()) {
 
 Creates a [Camera](entities/camera) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                |
-|-----------|----------|---------|--------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the camera in Home Assistant. |
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| entityId  | `String` | Entity ID of the camera in Home Assistant. |
 
 **Returns**  
 - `Camera`: Interface to retrieve the current state, including attributes, of the camera and call services on it.
@@ -225,9 +276,9 @@ camera.turnOn();
 
 Creates a [Climate](entities/climate) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                 |
-|-----------|----------|---------|---------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the climate in Home Assistant. |
+| Parameter | Type     | Description                                 |
+|-----------|----------|---------------------------------------------|
+| entityId  | `String` | Entity ID of the climate in Home Assistant. |
 
 **Returns**  
 - `Climate`: Interface to retrieve the current state, including attributes, of the climate and call services on it.
@@ -249,9 +300,9 @@ airCondition.setHvacMode(Climate.HvacMode.AUTO);
 
 Creates a [Cover](entities/cover) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                               |
-|-----------|----------|---------|-------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the cover in Home Assistant. |
+| Parameter | Type     | Description                               |
+|-----------|----------|-------------------------------------------|
+| entityId  | `String` | Entity ID of the cover in Home Assistant. |
 
 **Returns**  
 - `Cover`: Interface to retrieve the current state, including attributes, of the cover and call services on it.
@@ -273,9 +324,9 @@ officeCover.setPosition(50);
 
 Creates a [Light](entities/light) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                               |
-|-----------|----------|---------|-------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the light in Home Assistant. |
+| Parameter | Type     | Description                               |
+|-----------|----------|-------------------------------------------|
+| entityId  | `String` | Entity ID of the light in Home Assistant. |
 
 **Returns**  
 - `Light`: Interface to retrieve the current state, including attributes, of the light and call services on it.
@@ -297,9 +348,9 @@ ceiling.turnOn(LightAttr.brightness(120), LightAttr.transition(0.5));
 
 Creates a [Lock](entities/lock) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                              |
-|-----------|----------|---------|------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the lock in Home Assistant. |
+| Parameter | Type     | Description                              |
+|-----------|----------|------------------------------------------|
+| entityId  | `String` | Entity ID of the lock in Home Assistant. |
 
 **Returns**  
 - `Lock`: Interface to retrieve the current state, including attributes, of the lock and call services on it.
@@ -321,9 +372,9 @@ frontDoorLock.open();
 
 Creates a [MediaPlayer](entities/media-player) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                      |
-|-----------|----------|---------|--------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the media player in Home Assistant. |
+| Parameter | Type     | Description                                      |
+|-----------|----------|--------------------------------------------------|
+| entityId  | `String` | Entity ID of the media player in Home Assistant. |
 
 **Returns**  
 - `MediaPlayer`: Interface to retrieve the current state, including attributes, of the media player and call services on it.
@@ -345,9 +396,9 @@ speaker.setVolumePercent(30);
 
 Creates a [Scene](entities/scene) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                               |
-|-----------|----------|---------|-------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the scene in Home Assistant. |
+| Parameter | Type     | Description                               |
+|-----------|----------|-------------------------------------------|
+| entityId  | `String` | Entity ID of the scene in Home Assistant. |
 
 **Returns**  
 - `Scene`: Interface to activate the scene.
@@ -369,9 +420,9 @@ cosy.turnOn(1);
 
 Creates a [Sensor](entities/sensor) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                       |
-|-----------|----------|---------|---------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the sensor in Home Assistant. |
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| entityId  | `String` | Entity ID of the sensor in Home Assistant. |
 
 **Returns**  
 - `Sensor`: Interface to retrieve the current state, including attributes, of the sensor.
@@ -395,9 +446,9 @@ if(outsideTemp.asInteger() > 20) {
 
 Creates a [Switch](entities/switch) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                |
-|-----------|----------|---------|--------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the switch in Home Assistant. |
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| entityId  | `String` | Entity ID of the switch in Home Assistant. |
 
 **Returns**  
 - `Switch`: Interface to retrieve the current state, including attributes, of the switch and call services on it.
@@ -419,9 +470,9 @@ humidifier.turnOn();
 
 Creates a [Vacuum](entities/vacuum) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                |
-|-----------|----------|---------|--------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the vacuum in Home Assistant. |
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| entityId  | `String` | Entity ID of the vacuum in Home Assistant. |
 
 **Returns**  
 - `Vacuum`: Interface to retrieve the current state, including attributes, of the vacuum and call services on it.
@@ -444,9 +495,9 @@ vacuum.start();
 Gets the state of any entity, regardless of its domain. This can be used to retrieve the state of entities in domains
 that are not (yet) implemented in SmartBeans.
 
-| Parameter | Type     | Default | Description                                |
-|-----------|----------|---------|--------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the entity in Home Assistant. |
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| entityId  | `String` | Entity ID of the entity in Home Assistant. |
 
 **Returns**
 - `Entity<?>`: Interface to retrieve the current state, including attributes, of the entity.
@@ -471,9 +522,9 @@ These methods allow you to access and work with Home Assistant helpers.
 
 Creates a [Counter](entities/helper#counter) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                 |
-|-----------|----------|---------|---------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the counter in Home Assistant. |
+| Parameter | Type     | Description                                 |
+|-----------|----------|---------------------------------------------|
+| entityId  | `String` | Entity ID of the counter in Home Assistant. |
 
 **Returns**  
 - `Counter`: Interface to retrieve current value of the counter and call services on it.
@@ -496,9 +547,9 @@ sunnyDaysCounter.increment();
 
 Creates a [InputBoolean](entities/helper#input-boolean) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                       |
-|-----------|----------|---------|---------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the input boolean in Home Assistant. |
+| Parameter | Type     | Description                                       |
+|-----------|----------|---------------------------------------------------|
+| entityId  | `String` | Entity ID of the input boolean in Home Assistant. |
 
 **Returns**  
 - `InputBoolean`: Interface to retrieve or set the current value of the input boolean.
@@ -522,9 +573,9 @@ if (atHomeBoolean.isOn()) {
 
 Creates a [InputDateTime](entities/helper#input-date-time) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                        |
-|-----------|----------|---------|----------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the input datetime in Home Assistant. |
+| Parameter | Type     | Description                                        |
+|-----------|----------|----------------------------------------------------|
+| entityId  | `String` | Entity ID of the input datetime in Home Assistant. |
 
 **Returns**  
 - `InputDateTime`: Interface to retrieve or set the current value of the input datetime.
@@ -546,9 +597,9 @@ alarmClockDateTime.setValue(LocalTime.of(7, 15));
 
 Creates a [InputNumber](entities/helper#input-number) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                      |
-|-----------|----------|---------|--------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the input number in Home Assistant. |
+| Parameter | Type     | Description                                      |
+|-----------|----------|--------------------------------------------------|
+| entityId  | `String` | Entity ID of the input number in Home Assistant. |
 
 **Returns**  
 - `InputNumber`: Interface to retrieve or set the current value of the input number and call services on it.
@@ -570,9 +621,9 @@ wateringDuration.setValue(15);
 
 Creates a [InputSelect](entities/helper#input-select) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                      |
-|-----------|----------|---------|--------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the input select in Home Assistant. |
+| Parameter | Type     | Description                                      |
+|-----------|----------|--------------------------------------------------|
+| entityId  | `String` | Entity ID of the input select in Home Assistant. |
 
 **Returns**  
 - `InputSelect`: Interface to retrieve or set the current value of the input select and call services on it.
@@ -594,9 +645,9 @@ color.selectFirst();
 
 Creates a [InputText](entities/helper#input-text) object connected to the corresponding Home Assistant entity.  
 
-| Parameter | Type     | Default | Description                                    |
-|-----------|----------|---------|------------------------------------------------|
-| entityId  | `String` | –       | Entity ID of the input text in Home Assistant. |
+| Parameter | Type     | Description                                    |
+|-----------|----------|------------------------------------------------|
+| entityId  | `String` | Entity ID of the input text in Home Assistant. |
 
 **Returns**  
 - `InputText`: Interface to retrieve or set the current value of the input text.
@@ -627,12 +678,12 @@ These methods create [provided entities](../basic-concepts/provided) for your Sm
 Creates a [provided binary sensor](provided/binary-sensor) for the bean device and returns an object to control
 the created binary sensor in Home Assistant.
 
-| Parameter   | Type                           | Default         | Description                                                                                                                        |
-|-------------|--------------------------------|-----------------|------------------------------------------------------------------------------------------------------------------------------------|
-| uniqueId    | `String`                       | –               | Unique ID for the entity within the scope of the bean.                                                                            |
-| entityId    | `String`                       | –               | Entity ID of the created entity in Home Assistant.                                                                                |
-| builder     | `Builder<BinarySensorBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant.                                                   |
-| definition  | `BinarySensorDefinition`       | –               | Any custom object implementing the `BinarySensorDefinition` interface, which defines all properties of the provided binary sensor. |
+| Parameter   | Type                           | Description                                                                                                                        |
+|-------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| uniqueId    | `String`                       | Unique ID for the entity within the scope of the bean.                                                                             |
+| entityId    | `String`                       | Entity ID of the created entity in Home Assistant.                                                                                 |
+| builder     | `Builder<BinarySensorBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                                    |
+| definition  | `BinarySensorDefinition`       | Any custom object implementing the `BinarySensorDefinition` interface, which defines all properties of the provided binary sensor. |
 
 **Returns**  
 - `ProvidedBinarySensor`: Object to control the created provided binary sensor, including setting its state in Home Assistant.
@@ -662,12 +713,12 @@ diskSpaceWarning.setState(isDiskSpaceLow() ? State.ON : State.OFF);
 Creates a [provided sensor](provided/sensor) for the bean device and returns an object to control the created sensor
 in Home Assistant.
 
-| Parameter   | Type                     | Default         | Description                                                                                                           |
-|-------------|--------------------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-| uniqueId    | `String`                 | –               | Unique ID for the entity within the scope of the bean.                                                                |
-| entityId    | `String`                 | –               | Entity ID of the created entity in Home Assistant.                                                                    |
-| builder     | `Builder<SensorBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant.                                       |
-| definition  | `SensorDefinition`       | –               | Any custom object implementing the `SensorDefinition` interface, which defines all properties of the provided sensor. |
+| Parameter   | Type                     | Description                                                                                                           |
+|-------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| uniqueId    | `String`                 | Unique ID for the entity within the scope of the bean.                                                                |
+| entityId    | `String`                 | Entity ID of the created entity in Home Assistant.                                                                    |
+| builder     | `Builder<SensorBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                       |
+| definition  | `SensorDefinition`       | Any custom object implementing the `SensorDefinition` interface, which defines all properties of the provided sensor. |
 
 **Returns**  
 - `ProvidedSensor`: Object to control the created provided sensor, including setting its state in Home Assistant.
@@ -699,12 +750,12 @@ freeDiskSpace.setState(getFreeDiskSpace());
 Creates a [provided button](provided/button) for the bean device and returns an object to register listeners
 to the created button in Home Assistant.
 
-| Parameter   | Type                     | Default         | Description                                                                                                           |
-|-------------|--------------------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
-| uniqueId    | `String`                 | –               | Unique ID for the entity within the scope of the bean.                                                                |
-| entityId    | `String`                 | –               | Entity ID of the created entity in Home Assistant.                                                                    |
-| builder     | `Builder<ButtonBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant.                                       |
-| definition  | `ButtonDefinition`       | –               | Any custom object implementing the `ButtonDefinition` interface, which defines all properties of the provided button. |
+| Parameter   | Type                     | Description                                                                                                           |
+|-------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| uniqueId    | `String`                 | Unique ID for the entity within the scope of the bean.                                                                |
+| entityId    | `String`                 | Entity ID of the created entity in Home Assistant.                                                                    |
+| builder     | `Builder<ButtonBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                       |
+| definition  | `ButtonDefinition`       | Any custom object implementing the `ButtonDefinition` interface, which defines all properties of the provided button. |
 
 **Returns**  
 - `ProvidedButton`: Object that can be used to register listeners for button presses in Home Assistant.
@@ -738,11 +789,11 @@ These methods create [config entities](../basic-concepts/config) for your SmartB
 Creates a [configuration boolean](config/boolean) for this bean, which can be used to control a true/false value through
 a Home Assistant switch entity.
 
-| Parameter    | Type                            | Default         | Description                                                                     |
-|--------------|---------------------------------|-----------------|---------------------------------------------------------------------------------|
-| name         | `String`                        | –               | Name of the configuration value, must be unique within the scope of the bean.   |
-| defaultValue | `boolean`                       | –               | The default value of the configuration.                                         |
-| builder      | `Builder<ConfigBooleanBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant. |
+| Parameter    | Type                            | Description                                                                     |
+|--------------|---------------------------------|---------------------------------------------------------------------------------|
+| name         | `String`                        | Name of the configuration value, must be unique within the scope of the bean.   |
+| defaultValue | `boolean`                       | The default value of the configuration.                                         |
+| builder      | `Builder<ConfigBooleanBuilder>` | Builder for configuring the properties of the created entity in Home Assistant. |
 
 **Returns**  
 - `ConfigBoolean`: Object to query the current configured boolean value.
@@ -774,11 +825,11 @@ if (motionDetection.isOn()) {
 Creates a [configuration number](config/number) for this bean, which can be used to control a numeric value through a
 Home Assistant number entity.
 
-| Parameter    | Type                           | Default         | Description                                                                     |
-|--------------|--------------------------------|-----------------|---------------------------------------------------------------------------------|
-| name         | `String`                       | –               | Name of the configuration value, must be unique within the scope of the bean.   |
-| defaultValue | `int` / `double`               | –               | The default value of the configuration.                                         |
-| builder      | `Builder<ConfigNumberBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant. |
+| Parameter    | Type                           | Description                                                                     |
+|--------------|--------------------------------|---------------------------------------------------------------------------------|
+| name         | `String`                       | Name of the configuration value, must be unique within the scope of the bean.   |
+| defaultValue | `int` / `double`               | The default value of the configuration.                                         |
+| builder      | `Builder<ConfigNumberBuilder>` | Builder for configuring the properties of the created entity in Home Assistant. |
 
 **Returns**  
 - `ConfigNumber`: Object to query the current configured value.
@@ -805,11 +856,11 @@ ConfigNumber targetTemperature = sb.getConfigNumber("targetTemp", 20, def -> def
 Creates a [configuration duration](config/duration) for this bean, which can be used to control a duration value through
 a Home Assistant number entity. The duration is expressed in the unit specified by `unitOfMeasurement` (default is seconds).
 
-| Parameter    | Type                             | Default         | Description                                                                     |
-|--------------|----------------------------------|-----------------|---------------------------------------------------------------------------------|
-| name         | `String`                         | –               | Name of the configuration value, must be unique within the scope of the bean.   |
-| defaultValue | `Duration`                       | –               | The default duration value.                                                     |
-| builder      | `Builder<ConfigDurationBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant. |
+| Parameter    | Type                             | Description                                                                     |
+|--------------|----------------------------------|---------------------------------------------------------------------------------|
+| name         | `String`                         | Name of the configuration value, must be unique within the scope of the bean.   |
+| defaultValue | `Duration`                       | The default duration value.                                                     |
+| builder      | `Builder<ConfigDurationBuilder>` | Builder for configuring the properties of the created entity in Home Assistant. |
 
 **Returns**  
 - `ConfigDuration`: Object to query the current configured duration, with convenience methods for different units and types.
@@ -840,11 +891,11 @@ long minutes = wateringDuration.toMinutes();
 Creates a [configuration text](config/text) value for this bean, which can be used to control a string value through a 
 Home Assistant text entity.
 
-| Parameter    | Type                         | Default         | Description                                                                     |
-|--------------|------------------------------|-----------------|---------------------------------------------------------------------------------|
-| name         | `String`                     | –               | Name of the configuration value, must be unique within the scope of the bean.   |
-| defaultValue | `String`                     | –               | The default string value of the configuration.                                  |
-| builder      | `Builder<ConfigTextBuilder>` | *empty builder* | Builder for configuring the properties of the created entity in Home Assistant. |
+| Parameter    | Type                         | Description                                                                     |
+|--------------|------------------------------|---------------------------------------------------------------------------------|
+| name         | `String`                     | Name of the configuration value, must be unique within the scope of the bean.   |
+| defaultValue | `String`                     | The default string value of the configuration.                                  |
+| builder      | `Builder<ConfigTextBuilder>` | Builder for configuring the properties of the created entity in Home Assistant. |
 
 **Returns**  
 - `ConfigText`: Object to query the current configured text value.
@@ -873,13 +924,13 @@ String message = greetingMessage.getValue();
 Creates a [configuration select](config/select) value for this bean. A select value allows choosing from a fixed set of
 options and is exposed in Home Assistant as a select entity.  
 
-| Parameter    | Type                              | Default | Description                                                                   |
-|--------------|-----------------------------------|---------|-------------------------------------------------------------------------------|
-| name         | `String`                          | –       | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `String` / `Enum` / generic `T`   | –       | The default selected value.                                                   |
-| values       | `String...`                       | –       | Available options (for the string-based method).                              |
-| enumType     | `Class<E>`                        | –       | Enum type defining available options (for the enum-based method).             |
-| builder      | `Builder<ConfigSelectBuilder<T>>` | -       | Builder for advanced configuration (for the generic method).                  |
+| Parameter    | Type                              | Description                                                                   |
+|--------------|-----------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                          | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `String` / `Enum` / generic `T`   | The default selected value.                                                   |
+| values       | `String...`                       | Available options (for the string-based method).                              |
+| enumType     | `Class<E>`                        | Enum type defining available options (for the enum-based method).             |
+| builder      | `Builder<ConfigSelectBuilder<T>>` | Builder for advanced configuration (for the generic method).                  |
 
 **Returns**  
 - `ConfigSelect<T>`: Object to query the current configured option.
@@ -914,11 +965,11 @@ ConfigSelect<Mode> mode = sb.getConfigSelect(
 Creates a configuration value for a [RGB-based light preset](config/rgb-color). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                             | Default         | Description                                                                   |
-|--------------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                         | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `RgbColor`                       | –               | The default RGB color value.                                                  |
-| builder      | `Builder<ConfigRgbColorBuilder>` | *empty builder* | Builder for advanced configuration of the color entity.                       |
+| Parameter    | Type                             | Description                                                                   |
+|--------------|----------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                         | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `RgbColor`                       | The default RGB color value.                                                  |
+| builder      | `Builder<ConfigRgbColorBuilder>` | Builder for advanced configuration of the color entity.                       |
 
 **Returns**  
 - `ConfigRgbColor`: Access to the currently configured RGB color (including brightness) of the light preset, with 
@@ -950,11 +1001,11 @@ ambientColor.applyTo(sb.getLight("light.kitchen_ceiling"));
 Creates a configuration value for a [RGBW-based light preset](config/rgbw-color). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                               | Default         | Description                                                                   |
-|--------------|------------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                           | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `RgbwColor`                        | –               | The default RGBW color value.                                                 |
-| builder      | `Builder<ConfigRgbwColorBuilder>`  | *empty builder* | Builder for advanced configuration of the color entity.                       |
+| Parameter    | Type                               | Description                                                                   |
+|--------------|------------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                           | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `RgbwColor`                        | The default RGBW color value.                                                 |
+| builder      | `Builder<ConfigRgbwColorBuilder>`  | Builder for advanced configuration of the color entity.                       |
 
 **Returns**  
 - `ConfigRgbwColor`: Access to the currently configured RGBW color (including brightness) of the light preset, with 
@@ -987,11 +1038,11 @@ ambientColor.applyTo(sb.getLight("light.living_room_ceiling"));
 Creates a configuration value for a [RGBWW-based light preset](config/rgbww-color). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                                 | Default         | Description                                                                   |
-|--------------|--------------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                             | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `RgbwwColor`                         | –               | The default RGBWW color value.                                                |
-| builder      | `Builder<ConfigRgbwwColorBuilder>`   | *empty builder* | Builder for advanced configuration of the color entity.                       |
+| Parameter    | Type                                 | Description                                                                   |
+|--------------|--------------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                             | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `RgbwwColor`                         | The default RGBWW color value.                                                |
+| builder      | `Builder<ConfigRgbwwColorBuilder>`   | Builder for advanced configuration of the color entity.                       |
 
 **Returns**  
 - `ConfigRgbwwColor`: Access to the currently configured RGBWW color (including brightness, warm white and cold white) 
@@ -1024,11 +1075,11 @@ ambientColor.applyTo(sb.getLight("light.bedroom_ceiling"));
 Creates a configuration value for a [HS-based light preset](config/hs-color). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                               | Default         | Description                                                                   |
-|--------------|------------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                           | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `HsColor`                          | –               | The default HS (hue/saturation) color value.                                  |
-| builder      | `Builder<ConfigHsColorBuilder>`    | *empty builder* | Builder for advanced configuration of the color entity.                       |
+| Parameter    | Type                               | Description                                                                   |
+|--------------|------------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                           | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `HsColor`                          | The default HS (hue/saturation) color value.                                  |
+| builder      | `Builder<ConfigHsColorBuilder>`    | Builder for advanced configuration of the color entity.                       |
 
 **Returns**  
 - `ConfigHsColor`: Access to the currently configured HS color (including brightness) of the light preset, with methods 
@@ -1061,11 +1112,11 @@ moodColor.applyTo(sb.getLight("light.livingroom_lamp"));
 Creates a configuration value for a [XY-based light preset](config/xy-color). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                               | Default         | Description                                                                   |
-|--------------|------------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                           | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `XyColor`                          | –               | The default XY color value (CIE 1931 color space).                            |
-| builder      | `Builder<ConfigXyColorBuilder>`    | *empty builder* | Builder for advanced configuration of the color entity.                       |
+| Parameter    | Type                               | Description                                                                   |
+|--------------|------------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                           | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `XyColor`                          | The default XY color value (CIE 1931 color space).                            |
+| builder      | `Builder<ConfigXyColorBuilder>`    | Builder for advanced configuration of the color entity.                       |
 
 **Returns**  
 - `ConfigXyColor`: Access to the currently configured XY color (including brightness) of the light preset, with methods 
@@ -1098,11 +1149,11 @@ readingColor.applyTo(sb.getLight("light.office_desk"));
 Creates a configuration value for a [color temperature-based light preset](config/color-temp). Exposed in Home Assistant as a light 
 entity.  
 
-| Parameter    | Type                              | Default         | Description                                                                   |
-|--------------|-----------------------------------|-----------------|-------------------------------------------------------------------------------|
-| name         | `String`                          | –               | Name of the configuration value, must be unique within the scope of the bean. |
-| defaultValue | `int`                             | –               | The default color temperature in Kelvin.                                      |
-| builder      | `Builder<ConfigColorTempBuilder>` | *empty builder* | Builder for advanced configuration of the color temperature entity.           |
+| Parameter    | Type                              | Description                                                                   |
+|--------------|-----------------------------------|-------------------------------------------------------------------------------|
+| name         | `String`                          | Name of the configuration value, must be unique within the scope of the bean. |
+| defaultValue | `int`                             | The default color temperature in Kelvin.                                      |
+| builder      | `Builder<ConfigColorTempBuilder>` | Builder for advanced configuration of the color temperature entity.           |
 
 **Returns**  
 - `ConfigColorTemp`: Access to the currently configured color temperature (including brightness) of the light preset, with methods 
