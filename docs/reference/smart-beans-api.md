@@ -32,7 +32,8 @@ time, retrieving configuration parameters, logging messages, and interacting wit
 
 `getNow()`
 
-Returns the current time as an `Instant`.
+Returns the current time as an `Instant`. Unlike `Instant.now()`, this method allows the time to be controlled or 
+manipulated in JUnit test cases, making your tests deterministic and reproducible.
 
 **Returns**  
 - `Instant`: The current timestamp.  
