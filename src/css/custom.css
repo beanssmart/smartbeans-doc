@@ -23,3 +23,14 @@
   --ifm-color-primary-lighter: #519ae0;
   --ifm-color-primary-lightest: #72aee6;
 }
+
+/* Subtile Trennlinie für API-Doku */
+.subtle-hr {
+  border: none;
+  border-top: 1px solid #dcdcdc; /* Light Theme: helles Grau */
+  margin: 1em 0;
+}
+
+[data-theme='dark'] .subtle-hr {
+  border-top: 1px solid #555555; /* Dark Theme: dunkleres Grau */
+}

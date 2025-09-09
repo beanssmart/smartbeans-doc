@@ -10,7 +10,7 @@ Home Assistant uses triggers that fire when specific events occur, allowing you 
 defined actions. For example, when a motion sensor's state changes, it can trigger an action to turn on a light.
 
 In a SmartBean, you can connect any public method to a trigger using annotations that correspond to common Home
-Assistant triggers. Actions (or service calls) are executed through Java objects, such as calling turnOn() on a light
+Assistant triggers. Actions (or service calls) are executed through Java objects, such as calling `turnOn()` on a light
 entity. These objects can be automatically injected into your SmartBean using annotations.
 
 ````java
