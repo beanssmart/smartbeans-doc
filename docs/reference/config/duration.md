@@ -4,7 +4,7 @@ description: "A number representing a duration config parameter."
 title: Duration
 ---
 
-# Duration config
+# Duration Config
 
 The `ConfigDuration` can be used to create a configuration entity in Home Assistant for defining a duration. Technically, 
 it represents a configurable duration value in the bean that can be controlled through a Home Assistant number entity. 
@@ -38,7 +38,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the number entity created for the configurable duration in detail. It
 supports the following attributes:
@@ -61,7 +61,7 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Query current state
+## Query Current State
 
 When the number entity's state changes in Home Assistant, the update is immediately propagated to SmartBeans. You can
 query the current duration at any time by calling the appropriate methods on the `ConfigDuration` object. Several
@@ -107,7 +107,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a configurable duration using the 
 `getConfigDuration()` method of the `SmartBeans` API. This approach is useful in some edge cases when the entity's

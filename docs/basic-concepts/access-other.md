@@ -2,7 +2,7 @@
 sidebar_position: 100
 ---
 
-# Access other beans
+# Access Other Beans
 
 In some cases, you may need to access other beans from within your current bean to perform actions or retrieve 
 information. For example, consider a bean that implements a good-night routine, which closes covers, turns off all 
@@ -22,7 +22,7 @@ public class GoodNightRoutine implements SmartBean {
 }
 ````
 
-## Bean proxy
+## Bean Proxy
 
 You can access other bean instances through the `SmartBeans` API, which can be injected into your bean by declaring a 
 field of type `SmartBeans`. This API provides the `getBean()` method in two variants. The first can be used when there
@@ -53,7 +53,7 @@ public class HardwareButton implements SmartBean {
 }
 ````
 
-## Returned values
+## Returned Values
 
 `invoke()` is used to call methods, that don't have any return values. If the method you want to call has a return value
 and you want to get this, use `call()` or `callSync()` instead. Where `callSync()` returns the value direcly, `call()` returns

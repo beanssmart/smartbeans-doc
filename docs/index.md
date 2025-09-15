@@ -42,7 +42,7 @@ To start using SmartBeans, you'll need:
 
 Check out our [Quick Start Guide](getting-started) to begin your journey with SmartBeans.
 
-## Quick example
+## Quick Example
 
 Here's a simple example of a SmartBean that controls a light based on motion detection:
 

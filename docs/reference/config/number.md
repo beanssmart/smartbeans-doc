@@ -4,7 +4,7 @@ description: "A number representing a numeric config parameter."
 title: Number
 ---
 
-# Number config
+# Number Config
 
 The `ConfigNumber` can be used to create a configuration entity in Home Assistant for defining any number. Technically, 
 it represents a configurable number value in the bean that can be controlled through a Home Assistant number entity. 
@@ -42,7 +42,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the number entity created for the configurable duration in detail. It
 supports the following attributes:
@@ -65,7 +65,7 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Query current state
+## Query Current State
 
 When the number entity’s state changes in Home Assistant, the update is immediately propagated to SmartBeans. You can 
 query the current value at any time by calling the appropriate methods on the `ConfigNumber` object. The value can be 
@@ -108,7 +108,7 @@ public class ClimateControl implements SmartBean {
 }
 ````
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a configurable number using the 
 `getConfigNumber()` method of the `SmartBeans` API. This approach is useful in some edge cases when the entity's

@@ -2,13 +2,13 @@
 sidebar_position: 80
 ---
 
-# Provided entities
+# Provided Entities
 
 A SmartBean can provide entities to Home Assistant. These are additional entities that are created through the MQTT 
 discovery mechanism and are added to the [bean device](devices) in Home Assistant. These entities can be used to
 populate data or to trigger actions of the bean from Home Assistant.
 
-## Populate data
+## Populate Data
 
 To expose data from a bean to Home Assistant, you can define one or more sensors. For example, if a motion-controlled 
 light bean needs to provide a binary sensor indicating whether the light was activated by motion, you can declare a
@@ -41,7 +41,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Trigger actions
+## Trigger Actions
 
 You can also trigger bean actions through provided entities. SmartBeans allows you to create a button in Home Assistant 
 that links directly to a method in your bean. When the button is pressed, SmartBeans invokes the designated method. 

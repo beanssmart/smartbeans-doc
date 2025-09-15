@@ -4,7 +4,7 @@ description: "A text representing a string config parameter."
 title: Text
 ---
 
-# Text config
+# Text Config
 
 The `ConfigText` can be used to create a configuration entity in Home Assistant for defining any String. Technically, 
 it represents a configurable String value in the bean that can be controlled through a Home Assistant text entity. 
@@ -37,7 +37,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the number entity created for the configurable duration in detail. It
 supports the following attributes:
@@ -60,13 +60,13 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Query current state
+## Query Current State
 
 When the text entity’s state changes in Home Assistant, the update is immediately propagated to SmartBeans. You can 
 query the current value at any time by calling the `getValue()` method on the `ConfigText` object as shown in the above 
 example.
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a configurable String value using the 
 `getConfigText()` method of the `SmartBeans` API. This approach is useful in some edge cases when the entity's

@@ -4,7 +4,7 @@ description: "A light entity representing a preset defined by x and y coordinate
 title: XY Color
 ---
 
-# XY color config
+# XY Color Config
 
 The `ConfigXyColor` can be used to create a light entity in Home Assistant for configuring a light preset based on x and
 y coordinates in the [CIE 1931 color space](https://en.wikipedia.org/wiki/CIE_1931_color_space). Technically, it
@@ -39,7 +39,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the light entity created for the light preset in detail. It
 supports the following attributes:
@@ -62,7 +62,7 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Using current preset
+## Using Current Preset
 
 When the light entity's color or brightness changes in Home Assistant, the update is immediately propagated to SmartBeans. 
 You can query the current preset at any time by calling the appropriate methods on the `ConfigXyColor` object. In 
@@ -101,7 +101,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a XY-color-based light preset 
 using the `getConfigXyColor()` method of the `SmartBeans` API. This approach is useful in some edge cases when the

@@ -2,7 +2,7 @@
 sidebar_position: 60
 ---
 
-# Bean devices
+# Bean Devices
 
 :::note
 Bean devices require the MQTT integration in Home Assistant. They are only available when you have an MQTT broker

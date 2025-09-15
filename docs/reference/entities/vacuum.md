@@ -65,7 +65,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Vendor specific services
+### Vendor Specific Services
 
 Some vacuums provide vendor specific services, for example the roborock integration has a service `roborock.vacuum_clean_segment`.
 These services don't have any coressponding methods, but you can call any service through the `SmartBeans` API, like this:
@@ -88,7 +88,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Access entities programmatically
+## Access Entities Programmatically
 
 In addition to the annotation-based approach, you can programmatically access vacuum entities using the `getVacuum()` 
 method of the `SmartBeans` API. You might prefer this programmatic approach over annotations for example when the entity

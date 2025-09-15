@@ -2,7 +2,7 @@
 sidebar_position: 50
 ---
 
-# Multiple bean instances
+# Multiple Bean Instances
 
 By default, SmartBeans creates a single instance of each bean. However, it also supports creating multiple instances of 
 the same bean class when needed. Consider a scenario where you have a bean that controls a light with a motion sensor. 
@@ -28,7 +28,7 @@ input from different motion sensors. The "KitchenMotion" instance should respond
 the kitchen lighting, while the "BathroomMotion" instance should respond to the bathroom motion sensor to control the
 bathroom lighting.
 
-## Bean parameters
+## Bean Parameters
 
 Bean parameters can be used to configure each instance of a bean class. For example, if you want to configure the 
 "KitchenMotion" instance to use a different motion sensor, you can do so by creating a `sensor` parameter and set it to the 
@@ -53,7 +53,7 @@ public class MotionControl implements SmartBean {
 The name of a parameter must contain only alphanumeric characters, hyphens and underscores.
 :::
 
-### Accessing bean parameters
+### Accessing Bean Parameters
 
 The simplest approach to access configuration parameters is to reference them directly within annotations in your bean 
 class. This can be done, for instance, through an `@Entity` annotation on an instance field or a trigger annotation on 
@@ -124,7 +124,7 @@ public class MotionControl implements SmartBean {
 }
 ````
 
-### Using default values
+### Using Default Values
 
 Parameters can be made optional by specifying a default value that will be used when the parameter is not provided. This
 is achieved using the syntax `${paramName|defaultValue}`, where the value after the pipe symbol serves as the fallback

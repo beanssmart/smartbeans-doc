@@ -2,7 +2,7 @@
 sidebar_position: 10
 ---
 
-# Create a bean class
+# Create a Bean Class
 
 Creating a SmartBean is straightforward: simply create a Java class that implements the `SmartBean` interface.
 SmartBeans automatically detects and deploys all classes implementing this interface during runtime by scanning both the

@@ -3,13 +3,13 @@ sidebar_label: MQTT
 description: Triggers, when a MQTT message is published.
 ---
 
-# MQTT trigger
+# MQTT Trigger
 
 The MQTT trigger enables you to execute actions in response to a MQTT message within Home Assistant. It implements the 
 same functionality as the Home Assistant [mqtt trigger](https://www.home-assistant.io/docs/automation/trigger/#mqtt-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnMqttTrigger` annotation allows you to invoke any SmartBean method when something is published to a MQTT topic.
 
@@ -25,7 +25,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Specific payload
+### Specific Payload
 
 By specifying a `payload`, the method is only executed if the specific payload is published to the topic.
 
@@ -57,7 +57,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### State events
+### State Events
 
 Your annotated method can optionally include a `MqttEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters. Through this object, you can retrieve the published topic and
@@ -90,7 +90,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a MQTT trigger, you can use the `mqtt()` 

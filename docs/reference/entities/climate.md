@@ -116,7 +116,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Other services
+### Other Services
 
 There are other services in the climate domain, which are currently not supported via the `Climate` interface, but can be
 called through the `SmartBeans` API, if needed. For example `climate.set_preset_mode` sets a preset mode like 
@@ -139,7 +139,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Access entities programmatically
+## Access Entities Programmatically
 
 In addition to the annotation-based approach, you can programmatically access climate entities using the `getClimate()` 
 method of the `SmartBeans` API. You might prefer this programmatic approach over annotations for example when the entity

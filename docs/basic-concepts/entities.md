@@ -2,7 +2,7 @@
 sidebar_position: 20
 ---
 
-# Working with entities
+# Working with Entities
 
 In SmartBeans, Home Assistant entities are implemented as Java objects. Each Home Assistant domain is represented by a 
 corresponding Java interface that defines interactions with entities of that specific type. For example, the `light` 
@@ -29,7 +29,7 @@ public class KitchenMotionControl implements SmartBean {
 
 That's it, nothing more is needed.
 
-## Calling services
+## Calling Services
 
 To call a service on an entity, you can use one of the methods provided by the entity interface. For each entity domain,
 the most common service calls are implemented as corresponding method calls. For example, the `Light` interface has
@@ -61,7 +61,7 @@ of the `Cover` interface, which invokes the `cover.close_cover` service, takes n
 about the available service call methods, please refer to the [entity reference](../reference/entities) of a specific 
 entity domain.
 
-### Generic service calls
+### Generic Service Calls
 
 To invoke a service that is not exposed as a method on the entity interface, you can utilize the `callService()` method 
 provided by the `SmartBeans` API. This API is accessible through the `SmartBeans` interface. You can inject an instance of 
@@ -91,7 +91,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Retrieving state information
+## Retrieving State Information
 
 The state of an entity can be accessed through the entity object via its getter methods. Each entity interface 
 implements the `getStateAsString()` method, which returns the raw state string as provided by Home Assistant. Many 
@@ -184,7 +184,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## State listeners
+## State Listeners
 
 You can attach listeners to entity objects to receive notifications whenever the state of the entity or any of its 
 attributes changes. To register a listener, use the `onStateChanged()` method available on every entity. You must 

@@ -2,7 +2,7 @@
 sidebar_position: 90
 ---
 
-# Config entities
+# Config Entities
 
 Similar to [provided entities](provided), SmartBeans can generate additional entities in Home Assistant to configure the 
 bean. Config entities serve as input interfaces and are created in the `config` category of the bean device. SmartBeans 
@@ -48,7 +48,7 @@ and is the only required property of this annotation.
 Various config entity types are available. Refer to the [Config entities reference](../reference/config) for comprehensive 
 information about the different types and their implementation details.
 
-## Light presets
+## Light Presets
 
 One useful configuration entity that deserves special mention is the ability to configure light presets. If you need to 
 specify the brightness and color of a light that is activated by the bean, you can utilize the `ConfigRgbColor` entity 
@@ -81,7 +81,7 @@ the bean's device. The SmartBean device for this bean will look like this in Hom
 
 ![Fibonacci sequence in Home Assistant](/img/screenshots/config_entities.png)
 
-## Persistent config values
+## Persistent Config Values
 
 Every config entity is automatically instantiated during bean deployment, with its value in Home Assistant initialized 
 to the default value specified in the `@Config` annotation. Consequently, these configured values are not retained 

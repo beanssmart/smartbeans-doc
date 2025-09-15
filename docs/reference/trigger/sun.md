@@ -3,13 +3,13 @@ sidebar_label: Sun
 description: Triggers on sunset or sunrise.
 ---
 
-# Sun trigger
+# Sun Trigger
 
 The sun trigger enables you to execute actions when the sun is setting or rising. It implements the same functionality 
 as the Home Assistant [sun trigger](https://www.home-assistant.io/docs/automation/trigger/#sun-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnSunriseTrigger` and `@OnSunsetTrigger` annotations let you invoke any SmartBean method at sunrise or sunset.
 
@@ -30,7 +30,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Define offset
+### Define Offset
 
 By specifying an offset, the method is scheduled relative to sunrise or sunset. The offset can be positive (after) or
 negative (before) and may be provided either as a number of seconds or in the `hh:mm:ss` format, optionally prefixed 
@@ -48,7 +48,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Sun events
+### Sun Events
 
 Your annotated method can optionally include a `SunEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters. At the moment this is just the name of the event itself and
@@ -66,7 +66,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a sun trigger, you can use the `sun()` 

@@ -3,13 +3,13 @@ sidebar_label: Event
 description: Triggers on any (custom) event in Home Assistant.
 ---
 
-# Event trigger
+# Event Trigger
 
 The event trigger enables you to execute actions when an event occurs in Home Assistant. It implements the 
 same functionality as the Home Assistant [event trigger](https://www.home-assistant.io/docs/automation/trigger/#event-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnEventTrigger` annotation allows you to invoke any SmartBean method when the event occurs. The event type is 
 specified using the `type` attribute. The event type is the same as the event type you specify in Home Assistant.
@@ -26,7 +26,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Filter event data
+### Filter Event Data
 
 You can optionally specify the event data to only trigger the method when the event data matches the specified data.
 
@@ -59,7 +59,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a event trigger, you can use the `event()` 

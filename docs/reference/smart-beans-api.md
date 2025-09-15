@@ -21,7 +21,7 @@ public class ASampleBean implements SmartBean {
 
 The following is a complete reference of all methods provided by the `SmartBeans` API, organized by task category.
 
-## Framework utilities
+## Framework Utilities
 
 This section provides utility methods that are commonly used within a SmartBean. These include access to the current 
 time, retrieving configuration parameters, logging messages, and interacting with other beans.
@@ -120,7 +120,7 @@ kitchen.invoke(KitchenMotionControl::onMotion);
 
 <hr className="subtle-hr" />
 
-## Actions and triggers
+## Actions and Triggers
 
 This section covers methods to interact with Home Assistant dynamically, such as registering triggers, and calling 
 services.
@@ -216,7 +216,7 @@ See [timer documentation](../basic-concepts/timer) for more details and addition
 
 <hr className="subtle-hr" />
 
-## Entity access
+## Entity Access
 These methods allow you to access and work with Home Assistant entities.
 
 <hr className="subtle-hr" />
@@ -512,7 +512,7 @@ System.out.println("Next birthday is: " + birthdaysCalendar.getStateAsString());
 
 <hr className="subtle-hr" />
 
-## Helper access
+## Helper Access
 These methods allow you to access and work with Home Assistant helpers.
 
 <hr className="subtle-hr" />
@@ -664,7 +664,7 @@ greetingPhrase.setValue("Hello!");
 
 <hr className="subtle-hr" />
 
-## Provide entities
+## Provide Entities
 
 These methods create [provided entities](../basic-concepts/provided) for your SmartBean.
 
@@ -776,7 +776,7 @@ calculateButton.onPressed(evt -> calculateDiskSpace());
 
 <hr className="subtle-hr" />
 
-## Config entities
+## Config Entities
 
 These methods create [config entities](../basic-concepts/config) for your SmartBean.
 

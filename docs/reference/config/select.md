@@ -4,7 +4,7 @@ description: "A select representing a config parameter with fixed values (enum).
 title: Select
 ---
 
-# Select config
+# Select Config
 
 The `ConfigSelect` can be used to create a configuration entity in Home Assistant for selecting a value from a fixed set, 
 similar to a Java enum. Technically, it represents a configurable value in the bean that can be controlled through a Home
@@ -40,7 +40,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the select entity created for the configurable value in detail. It
 supports the following attributes:
@@ -63,12 +63,12 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Query current state
+## Query Current State
 
 When the select entity’s state changes in Home Assistant, the update is immediately propagated to SmartBeans. You can 
 query the current value at any time by calling the `getValue()` method on the `ConfigSelect` object.
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can also create a configurable value programmatically using the 
 `getConfigSelect()` method of the `SmartBeans` API. This approach is particularly useful when you want to use a type 
@@ -76,7 +76,7 @@ other than `String` for the selection. Keep in mind that in Home Assistant the t
 is handled internally by SmartBeans. Consequently, all possible values must be bidirectionally mappable to `String`
 values.
 
-### Using a Java enum
+### Using a Java Enum
 
 Using a Java enum is straightforward, as the `SmartBeans` API provides a dedicated method for this use case. Simply call
 the `getConfigSelect()` method and specify the enum you want to use. The resulting `ConfigSelect` automatically maps the
@@ -109,7 +109,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-### Using any type
+### Using Any Type
 
 Ultimately, you can use any type for `ConfigSelect` objects by defining how values are mapped to and from `String`. This
 is done by providing a builder as the third argument.  

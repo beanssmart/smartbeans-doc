@@ -4,7 +4,7 @@ description: "A light entity representing a preset defined by color hue and satu
 title: HS Color
 ---
 
-# HS color config
+# HS Color Config
 
 The `ConfigHsColor` can be used to create a light entity in Home Assistant for configuring a light preset based on color
 hue and saturation. Technically, it represents a configurable light preset in the bean that can be controlled through a
@@ -38,7 +38,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the light entity created for the light preset in detail. It
 supports the following attributes:
@@ -61,7 +61,7 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Using current preset
+## Using Current Preset
 
 When the light entity's color or brightness changes in Home Assistant, the update is immediately propagated to SmartBeans. 
 You can query the current preset at any time by calling the appropriate methods on the `ConfigHsColor` object. In 
@@ -100,7 +100,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a hue-and-saturation-based light preset 
 using the `getConfigHsColor()` method of the `SmartBeans` API. This approach is useful in some edge cases when the

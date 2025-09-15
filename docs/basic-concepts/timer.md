@@ -36,7 +36,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Using annotations
+## Using Annotations
 
 Alternatively, you can define a timer using the `@TimerDef` annotation. To implement this approach, create a field of 
 type `Timer` in your SmartBean and annotate it with `@TimerDef`. The annotation allows you to specify various timer 
@@ -70,7 +70,7 @@ public class KitchenMotionControl implements SmartBean {
 Another advantage of having the `Timer` object as a field of your bean is that you can invoke other operations on the timer 
 as described below.
 
-## Cancelling a timer
+## Cancelling a Timer
 
 You can cancel a timer by invoking the `cancel()` method on the timer object. This immediately stops the timer and 
 triggers a cancellation event. For example, in our motion detection scenario, if motion is detected again while the 
@@ -106,7 +106,7 @@ public class KitchenMotionControl implements SmartBean {
 }
 ````
 
-## Repeating and autostart
+## Repeating and Autostart
 
 SmartBeans timers can be configured to execute repeatedly at specified intervals. When a timer is initiated, the `elapsed`
 event is triggered at each interval for the designated number of repetitions. If the timer is canceled during execution, 

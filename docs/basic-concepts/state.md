@@ -2,7 +2,7 @@
 sidebar_position: 70
 ---
 
-# Bean state
+# Bean State
 
 Like any other Java class, a bean can maintain state through member variables. However, this state is not persistent 
 across bean redeployments, server restarts, or when SmartBeans loses connection to Home Assistant. 
@@ -146,7 +146,7 @@ foo: bar
 
 This can be easier to work with in some dashboard components.
 
-## Read/write state
+## Read/Write State
 
 In certain edge cases, annotation-based state persistence may not be suitable. For instance, when you need to persist 
 the state of an unsupported data type, such as a field of type `LocalDate`, you can leverage the `writeState` and 

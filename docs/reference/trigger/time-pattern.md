@@ -3,13 +3,13 @@ sidebar_label: Time pattern
 description: Triggers on specific time patterns, like every 5 minutes.
 ---
 
-# Time pattern trigger
+# Time Pattern Trigger
 
 The time pattern trigger enables you to execute actions if the hour, minute or second of the current time matches a 
 specific value. It implements the same functionality as the Home Assistant [time pattern trigger](https://www.home-assistant.io/docs/automation/trigger/#time-pattern-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnTimeTrigger` annotation allows you to invoke any SmartBean method every full hour.
 
@@ -42,7 +42,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Time events
+### Time Events
 
 Your annotated method can optionally include a `TimeEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters.
@@ -59,7 +59,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a time pattern trigger, you can use the `timePattern()` 

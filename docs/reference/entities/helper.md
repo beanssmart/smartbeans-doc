@@ -217,7 +217,7 @@ The `InputText` interface has the following methods:
 | `getMax()`         | Returns the maximum length of the text to be entered.         |
 | `getPattern()`     | Returns the regular expression all entered values must match. |
 
-## Access entities programmatically
+## Access Entities Programmatically
 
 Alongside annotations, all helper entities are available programmatically via the `SmartBeans` API's getter methods. 
 For example, this can be useful when the entity ID is computed at runtime by business logic and is unavailable at 

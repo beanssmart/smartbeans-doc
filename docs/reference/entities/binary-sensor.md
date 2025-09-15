@@ -3,7 +3,7 @@ sidebar_position: 20
 description: "Entities of domain: binary_sensor"
 ---
 
-# Binary sensor
+# Binary Sensor
 
 The `BinarySensor` interface represents `binary_sensor` entities in Home Assistant. When you define a field of type 
 `BinarySensor` in your SmartBean class and annotate it with `@Entity`, the framework automatically injects an object 
@@ -58,7 +58,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Access entities programmatically
+## Access Entities Programmatically
 
 In addition to the annotation-based approach, you can programmatically access binary sensors using the `getBinarySensor()` 
 method of the `SmartBeans` API. You might prefer this programmatic approach over annotations for example when the entity

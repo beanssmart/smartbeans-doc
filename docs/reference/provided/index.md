@@ -1,4 +1,4 @@
-# Provided entities
+# Provided Entities
 
 Provided entities are additional entities created by a SmartBean through the MQTT discovery mechanism and attached to 
 the [bean device](../basic-concepts/devices) in Home Assistant. These entities can be used to supply data to Home

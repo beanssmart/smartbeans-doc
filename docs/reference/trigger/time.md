@@ -3,13 +3,13 @@ sidebar_label: Time
 description: Trigger based on local time.
 ---
 
-# Time trigger
+# Time Trigger
 
 The time trigger enables you to execute actions at a specific time. It implements the same functionality 
 as the Home Assistant [time trigger](https://www.home-assistant.io/docs/automation/trigger/#time-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnTimeTrigger` annotation allows you to invoke any SmartBean method every day at a specific time.
 
@@ -25,7 +25,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Using entities
+### Using Entities
 
 You can also specify the time using entities. As in Home Assistant, you can use any input_datetime entity or any sensor
 entity whose device class is set to datetime.
@@ -42,7 +42,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Define offset
+### Define Offset
 
 By specifying an offset, the method is scheduled relative to the entity's value. The offset can be positive (after) or
 negative (before) and must be provided in the `hh:mm:ss` format, optionally prefixed with `+` or `-`.
@@ -75,7 +75,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Time events
+### Time Events
 
 Your annotated method can optionally include a `TimeEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters.
@@ -92,7 +92,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a time trigger, you can use the `time()` 

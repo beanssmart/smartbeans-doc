@@ -4,7 +4,7 @@ description: "A switch representing a boolean config parameter."
 title: Boolean
 ---
 
-# Boolean config
+# Boolean Config
 
 The `ConfigBoolean` can be used to create a configuration switch in Home Assistant to enable or disable a feature of the
 bean. Technically, it represents a configurable `boolean` value in the bean that can be controlled through a Home
@@ -36,7 +36,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Config` annotation can be used to configure the switch entity created for the configurable boolean in detail. It
 supports the following attributes:
@@ -59,7 +59,7 @@ supports the following attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Query current state
+## Query Current State
 
 When the switch entity's state changes in Home Assistant, it is immediately propagated to SmartBeans. You can query the
 current state at any time by calling the appropriate methods on the `ConfigBoolean` object. Several convenience methods
@@ -104,7 +104,7 @@ and can be enabled by specifying `@BeanDevice(type = BeanDevice.EntityType.SWITC
 triggers, and timers.
 :::
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a configurable boolean using the 
 `getConfigBoolean()` method of the `SmartBeans` API. This approach is useful in some edge cases when the entity's

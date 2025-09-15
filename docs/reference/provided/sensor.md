@@ -4,7 +4,7 @@ description: "Provided entity to publish any state to Home Assistant"
 title: Sensor
 ---
 
-# Provided sensor
+# Provided Sensor
 
 A provided sensor can represent any `integer`, `double` or `String` state of a bean as an entity in Home Assistant,
 making it available for use in UI components or automations. To create a provided sensor, declare a field of type `ProvidedSensor` 
@@ -39,7 +39,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Provided` annotation can be used to configure the provided sensor in detail. It supports the following attributes:
 
@@ -57,7 +57,7 @@ The `@Provided` annotation can be used to configure the provided sensor in detai
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Setting state and attributes
+## Setting State and Attributes
 
 As mentioned above, the state of the sensor can be updated using the `setState()` method. In addition, you can 
 attach custom attributes to the sensor. The `ProvidedSensor` interface offers several `setAttribute()` methods for
@@ -88,7 +88,7 @@ Keep in mind that the entity is not updated automatically when it is created or 
 the sensor to update immediately upon creation, you need to override the bean's `init()` method or use the `readState()`
 method, which is called when the persistent bean state is loaded.
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a binary sensor using the 
 `provideSensor()` method of the `SmartBeans` API. This approach is useful when the entity's attributes are 

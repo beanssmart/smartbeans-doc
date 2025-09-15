@@ -4,7 +4,7 @@ description: "Provided entity to trigger bean actions from Home Assistant"
 title: Button
 ---
 
-# Provided button
+# Provided Button
 
 A provided button can be used to trigger bean actions from Home Assistant, either manually by the user or through 
 automations. To create a provided button, declare a field of type `ProvidedButton` in your bean and annotate it with 
@@ -35,7 +35,7 @@ in Home Assistant. Without this annotation, no bean device will be created, and 
 created, since they cannot be associated with a device.
 :::
 
-## Entity configuration
+## Entity Configuration
 
 The `@Provided` annotation can be used to configure the provided binary sensor in detail. It supports the following 
 attributes:
@@ -54,7 +54,7 @@ attributes:
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
 
-## Handle button presses
+## Handle Button Presses
 
 There are two main options for handling button presses: you can either annotate a bean method to be invoked on button 
 presses, or register a listener on the `ProvidedButton` object.
@@ -102,7 +102,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Create entity programmatically
+## Create Entity Programmatically
 
 In addition to the annotation-based approach, you can programmatically create a button using the 
 `provideButton()` method of the `SmartBeans` API. This approach is useful when the entity's attributes are 

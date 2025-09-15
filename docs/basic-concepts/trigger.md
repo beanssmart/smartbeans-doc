@@ -2,7 +2,7 @@
 sidebar_position: 30
 ---
 
-# Register to triggers
+# Register to Triggers
 
 A fundamental concept for automations in Home Assistant is the implementation of [triggers](https://www.home-assistant.io/docs/automation/trigger/). 
 Home Assistant supports numerous trigger types that activate when specific events occur. For instance, a state trigger 
@@ -11,7 +11,7 @@ commonly used triggers, you can simply annotate a method in your SmartBean with 
 SmartBeans will automatically invoke this method when the corresponding trigger fires. For more complex scenarios, 
 SmartBeans also provides a generic approach that enables you to register listeners for any trigger type.
 
-## Using annotations
+## Using Annotations
 
 First, let's examine the annotation-based approach. The first method in the following example is invoked when the state
 of the `binary_sensor.motion_kitchen` entity changes to `on`, indicating motion detection in the kitchen. The second 
@@ -61,7 +61,7 @@ public class KitchenMotionControl implements SmartBean {
 Have a look at the [trigger reference documentation](../reference/trigger) for more information about supported trigger
 types, their specific annotations, and the corresponding event objects.
 
-## Generic trigger support
+## Generic Trigger Support
 
 SmartBeans currently does not provide native support for all Home Assistant trigger types. In such cases, you can 
 leverage the generic API approach to register listeners for any unsupported trigger type. For instance, the 

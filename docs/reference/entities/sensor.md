@@ -62,7 +62,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Access entities programmatically
+## Access Entities Programmatically
 
 In addition to the annotation-based approach, you can programmatically access sensors using the `getSensor()` 
 method of the `SmartBeans` API. You might prefer this programmatic approach over annotations for example when the entity

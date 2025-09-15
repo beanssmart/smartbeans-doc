@@ -3,7 +3,7 @@ sidebar_label: State
 description: Triggers, when the state or an attribute of an entity changes.
 ---
 
-# State trigger
+# State Trigger
 
 The state trigger enables you to execute actions in response to state changes of entities within Home Assistant. This
 trigger mechanism allows you to monitor and react to any state changes in your smart home system. It implements the same
@@ -17,7 +17,7 @@ For entities with numeric states (such as temperature sensors), it is recommende
 
 :::
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnStateTrigger` annotation allows you to invoke any SmartBean method when a state change occurs. You can define
 specific trigger conditions using the annotation's properties.
@@ -62,7 +62,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Attribute changes
+### Attribute Changes
 
 You can monitor specific attribute changes of an entity by using the `attribute` property in the annotation.
 
@@ -83,7 +83,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### State events
+### State Events
 
 Your annotated method can optionally include a `StateEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters. Through this object, you can retrieve both the previous
@@ -124,7 +124,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a state change trigger, you can use the `state()` 

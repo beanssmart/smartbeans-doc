@@ -3,13 +3,13 @@ sidebar_label: Webhook
 description: Triggers, when a webhook is called in Home Assistant.
 ---
 
-# Webhook trigger
+# Webhook Trigger
 
 The webhook trigger enables you to execute actions when a webhook is called in Home Assistant. It implements the 
 same functionality as the Home Assistant [webhook trigger](https://www.home-assistant.io/docs/automation/trigger/#webhook-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnWebhookTrigger` annotation allows you to invoke any SmartBean method when the webhook is called.
 
@@ -25,7 +25,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### HTTP methods
+### HTTP Methods
 
 The webhook endpoint is automatically created by Home Assistant, when the trigger is registered. You can specify the 
 HTTP methods that are allowed to call the endpoint.
@@ -42,7 +42,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Webhook events
+### Webhook Events
 
 Your annotated method can optionally include a `WebhookEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters. Through this object, you can retrieve the called webhook ID and
@@ -61,7 +61,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a webhook trigger, you can use the `webhook()` 

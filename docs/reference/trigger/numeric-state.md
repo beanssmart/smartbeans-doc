@@ -3,14 +3,14 @@ sidebar_label: Numeric state
 description: A specialized version of the state trigger that monitors numeric state changes.
 ---
 
-# Numeric state trigger
+# Numeric State Trigger
 
 The numeric state trigger enables you to execute actions in response to state changes of entities with a numeric state,
 such as temperature sensors, within Home Assistant. It implements the same functionality as the Home Assistant
 [numeric state trigger](https://www.home-assistant.io/docs/automation/trigger/#numeric-state-trigger),
 providing a seamless integration between SmartBeans and Home Assistant.
 
-## Annotating methods
+## Annotating Methods
 
 The `@OnNumericStateTrigger` annotation allows you to invoke any SmartBean method when a state change occurs. You can
 define specific trigger conditions using the annotation's properties.
@@ -48,7 +48,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Attribute changes
+### Attribute Changes
 
 You can monitor specific attribute changes of an entity by using the `attribute` property in the annotation.
 
@@ -64,7 +64,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### Value templates
+### Value Templates
 
 In addition to entities and attributes, you can use templates to monitor specific values and create triggers when these 
 values exceed or fall below defined thresholds.
@@ -85,7 +85,7 @@ public class ASampleBean implements SmartBean {
 }
 ````
 
-### State events
+### State Events
 
 Your annotated method can optionally include a `StateEvent` parameter. When the trigger is fired, SmartBeans provides an
 event object that gives you access to the event parameters. Through this object, you can retrieve both the previous
@@ -118,7 +118,7 @@ Methods with a default parameter return primitive types, while methods without a
 The wrapper types can be `null` in certain cases, for instance when the sensor is unavailable. The methods with default
 values, return the defaults in these cases.
 
-## Register triggers programmatically
+## Register Triggers Programmatically
 
 As an alternative to the annotation-based approach, you can register triggers programmatically using the 
 `registerTrigger()` method of the `SmartBeans` API. To register a numeric state change trigger, you can use the 
