@@ -37,7 +37,7 @@ created, since they cannot be associated with a device.
 
 ## Entity Configuration
 
-The `@Provided` annotation can be used to configure the provided binary sensor in detail. It supports the following 
+The `@Provided` annotation can be used to configure the provided button in detail. It supports the following 
 attributes:
 
 | Attribute           | Description                                                                                                                                         |
