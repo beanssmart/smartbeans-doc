@@ -103,3 +103,30 @@ public class KitchenMotionControl implements SmartBean {
   private ConfigRgbColor lightColor;
 }
 ````
+
+## Change Listener
+
+All config entities support change listeners that are invoked whenever the config value is updated through Home Assistant.  
+
+You can either annotate a parameterless method in your bean with `@OnConfigValueChanged`, passing the ID of the config 
+value, or register a listener programmatically by calling `addValueChangedListener()` on the config entity. The first
+approach keeps the code declarative, while the second one allows using lambdas or dedicated listener implementations.
+
+````java
+public class ASampleBean implements SmartBean {
+
+  @Config(value = "foo")
+  private ConfigText textConfig;
+
+  @Override
+  public void init(SmartBeans sb) {
+    textConfig.addValueChangedListener(
+        evt -> System.out.println("Config value changed to: " + evt.getValue()));
+  }
+  
+  @OnConfigValueChanged("textConfig")
+  public void configValueChanged() {
+    System.out.println("Config value changed to: " + textConfig.getValue());
+  }
+}
+````
