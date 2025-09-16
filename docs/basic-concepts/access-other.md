@@ -55,10 +55,6 @@ public class HardwareButton implements SmartBean {
 
 ## Returned Values
 
-`invoke()` is used to call methods, that don't have any return values. If the method you want to call has a return value
-and you want to get this, use `call()` or `callSync()` instead. Where `callSync()` returns the value direcly, `call()` returns
-it as a `BeanFuture` object, similar to the known `Future` object in Java core library.
-
 The `invoke()` method is used to call methods that do not return a value. If the method you want to call has a return 
 value, use `call()` or `callSync()` instead. While `callSync()` returns the value directly, `call()` returns it as a 
 `BeanFuture` object, similar to the standard `Future` in the Java core library.
