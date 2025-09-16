@@ -71,6 +71,7 @@ are provided, which serve the same purpose but differ in naming to improve code 
 | `isTrue()`   | Returns the current value as `boolean`, `true` when the state of the switch is `on`.  |
 | `isFalse()`  | Returns the current value as `boolean`, `true` when the state of the switch is `off`. |
 | `isSet()`    | Returns the current value as `boolean`, `true` when the state of the switch is `on`.  |
+| `isOn()`     | Returns the current value as `boolean`, `true` when the state of the switch is `on`.  |
 
 Here is a complete example:
 
