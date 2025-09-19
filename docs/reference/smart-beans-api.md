@@ -776,6 +776,43 @@ calculateButton.onPressed(evt -> calculateDiskSpace());
 
 <hr className="subtle-hr" />
 
+### provideSwitch
+
+`provideSwitch(String uniqueId, String entityId)`  
+`provideSwitch(String uniqueId, String entityId, Builder<SwitchBuilder> builder)`  
+`provideSwitch(SwitchDefinition definition)`
+
+Creates a [provided switch](provided/switch) for the bean device and returns an object to set the state and register
+listeners to the created switch in Home Assistant.
+
+| Parameter   | Type                     | Description                                                                                                           |
+|-------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| uniqueId    | `String`                 | Unique ID for the entity within the scope of the bean.                                                                |
+| entityId    | `String`                 | Entity ID of the created entity in Home Assistant.                                                                    |
+| builder     | `Builder<ButtonBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                       |
+| definition  | `SwitchDefinition`       | Any custom object implementing the `SwitchDefinition` interface, which defines all properties of the provided switch. |
+
+**Returns**  
+- `ProvidedSwitch`: Object that can be used to set the state of the created switch and register listeners for state changes in Home Assistant.
+
+**Example**  
+
+```java
+ProvidedSwitch autoMode = sb.provideSwitch(
+    "auto-mode",
+    "switch.auto_mode",
+    def -> def.setFriendlyName("Automatic Mode")
+);
+
+//set state
+autoMode.setState(State.ON);
+
+// Register a listener when switch is turened on
+autoMode.onTurnOn(evt -> enableAutoMode());
+````
+
+<hr className="subtle-hr" />
+
 ## Config Entities
 
 These methods create [config entities](../basic-concepts/config) for your SmartBean.
