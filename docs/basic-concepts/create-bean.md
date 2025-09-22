@@ -16,7 +16,7 @@ public class MotionLightControl implements SmartBean {
 }
 ````
 
-The `sb` object in this class is an instance of SmartBeans and represents the SmartBeans context, providing access to 
+The `sb` object in this class is an instance of `SmartBeans` and represents the SmartBeans context, providing access to 
 the framework's API. The framework automatically injects this object at runtime, eliminating the need for manual 
 initialization. Every SmartBean requires a public default constructor - which is automatically available if you don't 
 define any constructors explicitly.
@@ -53,13 +53,13 @@ framework's annotations.
 
 The most common methods at `SmartBeans` are:
 
-| Method                               | Description                                                                              |
-|--------------------------------------|------------------------------------------------------------------------------------------|
-| `log(String)`                        | Writes a message to the bean's dedicated log file for monitoring and debugging purposes. |
-| `getBean(Class[, String])`           | Retrieves other SmartBean instances to enable direct method invocation between beans.    |
-| `getNow()`                           | Returns the current local time. Preferred over `Instant.now()` for consistency.          |
-| `callService(Service)`               | Calls any Home Assistant service (also known as action).                                 |
-| `registerTrigger(TriggerDefinition)` | Programmatically subscribes to any Home Assistant trigger event.                         |
+| Method                               | Description                                                                                           |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `log(String)`                        | Writes a message to the bean's dedicated log file for monitoring and debugging purposes.              |
+| `getBean(Class[, String])`           | Retrieves other SmartBean instances to enable direct [method invocation between beans](access-other). |
+| `getNow()`                           | Returns the current local time. Preferred over `Instant.now()` for consistency.                       |
+| `callService(Service)`               | Calls any Home Assistant service (also known as action).                                              |
+| `registerTrigger(TriggerDefinition)` | Programmatically subscribes to any Home Assistant trigger event.                                      |
 
 There are a lot more methods, but normally you do not need to use them. For example you can access a light entity by
 calling `getLight("entityId")` but it is easier to use an annotation. For a complete reference check out the 
