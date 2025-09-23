@@ -120,6 +120,40 @@ kitchen.invoke(KitchenMotionControl::onMotion);
 
 <hr className="subtle-hr" />
 
+### callAsync
+
+`invokeAsync(Callable<?> backgroundTask)`  
+`invokeAsync(Runnable backgroundTask)`
+
+Executes the provided task in the background, outside the bean thread. This is intended for time-consuming operations
+(for example, web service calls) that should not block the entire bean. All other bean methods, like triggers and
+callbacks, are executed in parallel with the background task. 
+
+Be careful when accessing bean state from the background process. To avoid issues, it is recommended **not to read or
+write bean state** directly from the background task. If you need to use bean state, create a copy before starting the
+task. If you want to update bean state, use the callback mechanism provided by the `onFinished()` method of the returned
+`BeanFuture` object, as this callback always runs in the bean thread.
+
+| Parameter      | Type          | Description                                                                                          |
+|----------------|---------------|------------------------------------------------------------------------------------------------------|
+| backgroundTask | `Callable<?>` | Background task as a Java `Callable`, if you need to return a result.                                |
+| backgroundTask | `Runnable`    | Background task as a Java `Runnable`, if no result is needed.                                        |
+
+**Returns**  
+- `BeanFuture<?>`: Future object to access the result and register callbacks for when the background task finishes.  
+
+**Example**  
+
+````java
+BeanFuture<WeatherData> future = sb.callAsync(() -> {
+  WeatherClient client = new WeatherClient(serviceUrl);
+  return client.getCurrentWeather();
+});
+future.onFinished(data -> sb.log("Weather forecast is " + data.getForecast()));
+````
+
+<hr className="subtle-hr" />
+
 ## Actions and Triggers
 
 This section covers methods to interact with Home Assistant dynamically, such as registering triggers, and calling 
