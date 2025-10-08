@@ -823,7 +823,7 @@ listeners to the created switch in Home Assistant.
 |-------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | uniqueId    | `String`                 | Unique ID for the entity within the scope of the bean.                                                                |
 | entityId    | `String`                 | Entity ID of the created entity in Home Assistant.                                                                    |
-| builder     | `Builder<ButtonBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                       |
+| builder     | `Builder<SwitchBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                       |
 | definition  | `SwitchDefinition`       | Any custom object implementing the `SwitchDefinition` interface, which defines all properties of the provided switch. |
 
 **Returns**  
@@ -843,6 +843,43 @@ autoMode.setState(State.ON);
 
 // Register a listener when switch is turened on
 autoMode.onTurnOn(evt -> enableAutoMode());
+````
+
+<hr className="subtle-hr" />
+
+### provideLight
+
+`provideLight(String uniqueId, String entityId)`  
+`provideLight(String uniqueId, String entityId, Builder<LightBuilder> builder)`  
+`provideLight(LightDefinition definition)`
+
+Creates a [provided light](provided/light) for the bean device and returns an object to set the state and register
+listeners to the created light in Home Assistant.
+
+| Parameter   | Type                    | Description                                                                                                         |
+|-------------|-------------------------|---------------------------------------------------------------------------------------------------------------------|
+| uniqueId    | `String`                | Unique ID for the entity within the scope of the bean.                                                              |
+| entityId    | `String`                | Entity ID of the created entity in Home Assistant.                                                                  |
+| builder     | `Builder<LightBuilder>` | Builder for configuring the properties of the created entity in Home Assistant.                                     |
+| definition  | `SwitchDefinition`      | Any custom object implementing the `LightDefinition` interface, which defines all properties of the provided light. |
+
+**Returns**  
+- `ProvidedLight`: Object that can be used to set the state of the created light and register listeners for state changes in Home Assistant.
+
+**Example**  
+
+```java
+ProvidedLight customLight = sb.provideLight(
+    "custom",
+    "light.custom",
+    def -> def.setFriendlyName("Custom light")
+);
+
+//set state
+customLight.setState(State.ON);
+
+// Register a listener when switch is turened on
+customLight.onTurnOn(evt -> turnOnLight());
 ````
 
 <hr className="subtle-hr" />
