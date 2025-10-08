@@ -46,6 +46,8 @@ attributes:
 | `unitOfMeasurement` | _Not used for binary sensors._                                                                                                                      |
 | `stateClass`        | _Not used for binary sensors._                                                                                                                      |
 | `options`           | _Not used for binary sensors._                                                                                                                      |
+| `supportBrightness` | _Not used for binary sensors._                                                                                                                      |
+| `colorModes`        | _Not used for binary sensors._                                                                                                                      |
 
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.

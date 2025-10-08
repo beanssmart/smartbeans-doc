@@ -6,14 +6,6 @@ title: Switch
 
 # Provided Switch
 
-A provided switch can be used to turn something on/off and control a bean function with it. To create a provided switch,
-declare a field of type `ProvidedSwitch` in your bean and annotate it with `@Provided`. SmartBeans will then automatically 
-create the switch in Home Assistant, generate the corresponding Java object to handle state changes, and inject this
-object into the annotated field. 
-
-You can register listeners for the switch programmatically or use the `@OnSwitchTurnedOn` and `@OnSwitchTurnedOff`
-annotations to mark a method. SmartBeans will then invoke the annotated method whenever the switch is turned on or off.
-
 A provided switch can be used to toggle something on or off and link this action to a bean function. To create a
 provided switch, declare a field of type `ProvidedSwitch` in your bean and annotate it with `@Provided`. SmartBeans 
 will then automatically create the switch in Home Assistant, generate the corresponding Java object to handle 
@@ -54,9 +46,11 @@ attributes:
 | `friendlyName`      | The friendly name of the entity displayed in Home Assistant.                                                                                        |
 | `icon`              | The icon shown in Home Assistant for this entity. If no icon is specified, it is derived from the device class.                                     |
 | `deviceClass`       | The [device class](https://www.home-assistant.io/integrations/switch/#device-class) of the entity in Home Assistant.                                |
-| `unitOfMeasurement` | _Not used for buttons._                                                                                                                             |
-| `stateClass`        | _Not used for buttons._                                                                                                                             |
-| `options`           | _Not used for buttons._                                                                                                                             |
+| `unitOfMeasurement` | _Not used for switches._                                                                                                                            |
+| `stateClass`        | _Not used for switches._                                                                                                                            |
+| `options`           | _Not used for switches._                                                                                                                            |
+| `supportBrightness` | _Not used for switches._                                                                                                                            |
+| `colorModes`        | _Not used for switches._                                                                                                                            |
 
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
@@ -97,9 +91,8 @@ public class ASampleBean implements SmartBean {
 ### Listener
 
 Alternatively, you can register listeners directly on the `ProvidedSwitch` instance. The listener must implement
-the `ProvidedSwitch.TurnOnListener` and/or `ProvidedSwitch.TurnOffListener` interface, which each define a single
-method: `onTurnedOn(TurnOnEvent event)` or `onTurnedOff(TurnOffEvent event)`. Since both are functional interfaces, they
-can be implemented conveniently using lambda expressions.
+the `ProvidedSwitch.Listener` interface, which defines methods for every state chage: `onTurnedOn(TurnOnEvent event)` 
+and `onTurnedOff(TurnOffEvent event)`.
 
 ````java
 @SmartBeanDef(beanDevice = @BeanDevice)
@@ -110,8 +103,17 @@ public class ASampleBean implements SmartBean {
 
   @Override
   public void init(SmartBeans sb) {
-    providedSwitch.onTurnOn(evt -> sb.log("sample switch turned on"));
-    providedSwitch.onTurnOff(evt -> sb.log("sample switch turned off"));
+    providedSwitch.addListener(new ProvidedSwitch.Listener() {
+      @Override
+      public void onTurnedOn(ProvidedSwitch.TurnOnEvent event) {
+        sb.log("sample switch turned on");
+      }
+
+      @Override
+      public void onTurnedOff(ProvidedSwitch.TurnOffEvent event) {
+        sb.log("sample switch turned off");
+      }
+    });
   }
 }
 ````
@@ -156,7 +158,7 @@ attributes.
 public class ASampleBean implements SmartBean {
   @Override
   public void init(SmartBeans sb) {
-    ProvidedSwitch providedButton = sb.provideSwitch("my_switch", "switch.a_sample_switch", def -> def
+    ProvidedSwitch providedSwitch = sb.provideSwitch("my_switch", "switch.a_sample_switch", def -> def
         .setFriendlyName("A sample switch")
         .setIcon("mdi:home")
     );

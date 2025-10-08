@@ -53,6 +53,8 @@ The `@Provided` annotation can be used to configure the provided sensor in detai
 | `unitOfMeasurement` | The unit of measurement used in Home Assistant. If not specified, it is derived from the device class.                                              |
 | `stateClass`        | The [state class](https://developers.home-assistant.io/docs/core/entity/sensor/#available-state-classes) of the entity in Home Assistant.           |
 | `options`           | If set, the sensor can only take values from this array.                                                                                            |
+| `supportBrightness` | _Not used for sensors._                                                                                                                             |
+| `colorModes`        | _Not used for sensors._                                                                                                                             |
 
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.

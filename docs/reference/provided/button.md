@@ -50,6 +50,8 @@ attributes:
 | `unitOfMeasurement` | _Not used for buttons._                                                                                                                             |
 | `stateClass`        | _Not used for buttons._                                                                                                                             |
 | `options`           | _Not used for buttons._                                                                                                                             |
+| `supportBrightness` | _Not used for buttons._                                                                                                                             |
+| `colorModes`        | _Not used for buttons._                                                                                                                             |
 
 The entity ID, friendly name, and icon are only initial values set when the entity is created. They can later be 
 modified by the user through the Home Assistant interface.
@@ -97,7 +99,12 @@ public class ASampleBean implements SmartBean {
 
   @Override
   public void init(SmartBeans sb) {
-    providedButton.onPressed(evt -> sb.log("sample button pressed"));
+    providedButton.addListener(new ProvidedButton.Listener() {
+      @Override
+      public void onButtonPressed(ProvidedButton.PressedEvent event) {
+        sb.log("sample button pressed");
+      }
+    });
   }
 }
 ````
