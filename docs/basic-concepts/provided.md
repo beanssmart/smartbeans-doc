@@ -47,7 +47,7 @@ You can also trigger bean actions through provided entities. SmartBeans allows y
 that links directly to a method in your bean. When the button is pressed, SmartBeans invokes the designated method. 
 
 To implement this functionality create a field of type `ProvidedButton` in your bean and Annotate it with `@Provided`.
-SmartBeans will thena utomatically register the button in Home Assistant and inject a `ProvidedButton` instance into 
+SmartBeans will then automatically register the button in Home Assistant and inject a `ProvidedButton` instance into 
 your bean
 
 You have two options to handle button press events:
