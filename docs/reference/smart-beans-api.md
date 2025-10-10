@@ -154,6 +154,28 @@ future.onFinished(data -> sb.log("Weather forecast is " + data.getForecast()));
 
 <hr className="subtle-hr" />
 
+### runDelayed
+
+`runDelayed(Duration delay, Runnable task)`  
+
+Executes the provided task after a specific amount of time. The `run()` method of the given `Runnable` object is called 
+again in the bean thread after the delay has elapsed. During the waiting period, the bean thread remains unblocked and 
+can continue to execute other triggers and callbacks.
+
+| Parameter | Type       | Description                                                      |
+|-----------|------------|------------------------------------------------------------------|
+| delay     | `Duration` | Duration specifying the delay before the `Runnable` is executed. |
+| task      | `Runnable` | Task that will be executed after the given delay.                |
+
+**Example**  
+
+````java
+sb.runDelayed(Duration.ofSeconds(10), 
+    () -> sb.log("10 seconds have passed!"));
+````
+
+<hr className="subtle-hr" />
+
 ## Actions and Triggers
 
 This section covers methods to interact with Home Assistant dynamically, such as registering triggers, and calling 
