@@ -59,3 +59,10 @@ The `invoke()` method is used to call methods that do not return a value. If the
 value, use `call()` or `callSync()` instead. While `callSync()` returns the value directly, `call()` returns it as a 
 `BeanFuture` object, similar to the standard `Future` in the Java core library.
 
+If a return value is expected, you also need to consider inactive beans, because they cannot return any values.  
+Since no methods are invoked on inactive beans, the proxy will not execute the call either. By default, `null` is
+returned in these situations. This can be problematic when using primitive Java types, because auto-unboxing a `null`
+value will result in a `NullPointerException`. To handle this safely, all `call()` methods of the proxy provide an 
+overload that allows you to specify a default return value. This default value is returned automatically when the target 
+bean is inactive.
+
