@@ -49,6 +49,7 @@ supported operations:
 | `vacuum.stop`           | `stop()`         | Stops cleaning.                                 |
 | `vacuum.return_to_base` | `returnToBase()` | Returns the robot to it's base.                 |
 | `vacuum.send_command`   | `sendCommand()`  | Send any vendor specific command to the vacuum. |
+| `vacuum.clean_area`     | `cleanArea()`    | Start cleaning specific Home Assistant areas.   |
 
 ## Example
 
