@@ -23,6 +23,7 @@ The sensor's state is represented by the `BinarySensor.State` enum, which mirror
 |----------------------|------------------------------------------------------------|
 | `getState()`         | Get the current state of the sensor.                       |
 | `isOn()`             | Shortcut to check if the sensor is currently on.           |
+| `isOff()`            | Shortcut to check if the sensor is currently off.          |
 | `getStateAsString()` | Returns the original state from the Home Assistant entity. |
 
 ## Attributes
